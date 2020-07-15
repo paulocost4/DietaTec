@@ -1,0 +1,12 @@
+{
+  "name": "DietaTec",
+  "displayName": "DietaTec",
+  "expo": {
+    "name": "DietaTec",
+    "slug": "DietaTec",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
