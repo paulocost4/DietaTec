@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 // ID APLICATIVO:                 1652804771562869
 // CHAVE SECRETA DO APLICATIVO:   4fc37ef8a08d481b900e279045863ee7
 
+=======
+>>>>>>> origin/master
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { LoginButton } from 'react-native-fbsdk';
