@@ -6,19 +6,11 @@ const style = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         paddingTop: 20,
-<<<<<<< HEAD
         backgroundColor: '#1C1C1C',
         width: '100%',
         height: '100%'   
     },
 
-=======
-        backgroundColor: 'red',
-        width: '100%',
-        height: '100%'
-        
-    }
->>>>>>> origin/master
 })
 
 export default style
