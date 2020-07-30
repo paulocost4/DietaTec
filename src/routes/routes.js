@@ -15,7 +15,7 @@ export default function Routes (){
 
     return(        
         <NavigationContainer>
-            <Stack.Navigator initialRouteName = {'diario'} screenOptions = {{headerShown: false,}}>
+            <Stack.Navigator initialRouteName = {'apresentaçao'} screenOptions = {{headerShown: false,}}>
                 <Stack.Screen 
                     name='apresentaçao'
                     component={apresentacao}

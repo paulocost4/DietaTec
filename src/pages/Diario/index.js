@@ -160,60 +160,28 @@ export default function Diario(){
             title: 'Café da manhã',
             horario : '08:00',
             consumido: '0 g',
-            alimentos: [
-                {
-                    id: 0,
-                    nome: 'Alimento teste',
-                    quantidade: '10 g',
-                    calorias: '300 Kcal'
-                },
-                {
-                    id: 0,
-                    nome: 'Teste 02',
-                    quantidade: '10 g',
-                    calorias: '300 Kcal'
-                }
-            ]
+            alimentos: []
             // alimentos: 'ali'
         },
         {
             title: 'Almoço',
             horario : '12:00',
             consumido: '0 g',
-            alimentos: [{
-                id: 0,
-                nome: 'Alimento teste',
-                quantidade: '10 g',
-                calorias: '300 Kcal'
-            }],
+            alimentos: [],
             // alimentos: 'ali'
         },
         {
             title: 'Lanche',
             horario : '16:00',
             consumido: '0 g',
-            alimentos: [{
-                id: 0,
-                nome: 'Alimento teste',
-                quantidade: '19 g',
-                calorias: '3 Kcal'
-            }],
+            alimentos: [],
             // alimentos: 'alim'
         },
         {
             title: 'Janta',
             horario : '19:00',
             consumido: '0 g',
-            alimentos: 
-            [
-                {
-                    id: 0,
-                    nome: 'Alimento teste',
-                    quantidade: '10 g',
-                    calorias: '300 Kcal'
-                },
-                
-            ]
+            alimentos: []
             // alimentos: 'alim'
         }
     ]
@@ -257,15 +225,16 @@ export default function Diario(){
         return(
             <View style={{width: '100%', alignItems: 'center'}}>
                 <Cards title={value.title} horario={value.horario} consumido={value.consumido} /> 
-                <View style={style.areaAlimentosConsumidos}>
-                    <FlatList
-                    
-                        data={value.alimentos}
-                        renderItem={ ({item})=>  <SubCards data={item} />  }
-                        keyExtractor = {({id})=>{ id }}
-                        // ItemSeparatorComponent ={}
-                    />
-                </View>
+                {value.alimentos.length===0 ? null : 
+                    <View style={style.areaAlimentosConsumidos}>
+                        <FlatList
+                            data={value.alimentos}
+                            renderItem={ ({item})=>  <SubCards data={item} />  }
+                            keyExtractor = {({id})=>{ id }}
+                            // ItemSeparatorComponent ={}
+                        />
+                    </View>
+                }
             </View>
             )  
     })
@@ -273,7 +242,7 @@ export default function Diario(){
     return(
         <View style= {{ flex: 1 }}>
             <View style = {style.areaNotificacao}></View>
-            <ScrollView contentContainerStyle={{}} style={{} }>
+            <ScrollView contentContainerStyle={{flex:1}} style={{  }}>
 
                 <View style = {style.container}>
                 
