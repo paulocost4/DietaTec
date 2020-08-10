@@ -41,20 +41,26 @@ const style = StyleSheet.create({
     areaNotificacao: {
         height: 25,
         width: '100%',
-        backgroundColor: '#64a5Ef',
+        // backgroundColor: '#64a5Ef',
+        backgroundColor: '#d0d0d0',
+
     },
     inputText:{
         height: 40,
-        width: '92%',
-        backgroundColor: '#fff',
-        borderRadius: 5
+        width: '90%',
+        fontSize: 16,
+        color: '#fff'
     },
     textMensagem: {
         color: '#fff',
         marginLeft: 10,
-        marginRight: 10
-
+        marginRight: 10,
     },
+    iconeSend:{
+        // position: 'absolute',
+        marginTop: 5, 
+        
+    }
     
 })
 

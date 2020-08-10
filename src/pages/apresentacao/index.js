@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
-import { Text, View, Image, TextInput, Animated , TouchableOpacity, ScrollView} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, TextInput, Animated , TouchableOpacity, ScrollView, StatusBar} from 'react-native';
 import style from './style'
-
-export default function login(){
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { FlatList } from 'react-native-gesture-handler';
+// import ChatBot from 'react-native-chatbot'
+export default function chat(){
     
     let [altura, setAltura] = useState(35)
     let [largura, setLargura] = useState(new Animated.Value(0))
+    let opacidadeAnimada = new Animated.Value(0)
+    let mensagemInput = ''
     
+    // Animated.timing(opacidadeAnimada, {
+    //     duration: 200,
+    //     toValue: 1.0
+    // }).start()
+
     function MensagemApp(props){
         let {mensagem} = props
-
+        
         let corpoMensagemPequeno = {
             backgroundColor: '#292929',
             width: mensagem < 35 ? null : '75%',
@@ -18,7 +27,8 @@ export default function login(){
             marginLeft: 15,
             marginRight: 15,
             borderRadius: 5,
-            justifyContent: 'center'
+            justifyContent: 'center',
+            opacity: 1
         }
         let corpoMensagemGrande = {
             backgroundColor: '#292929',
@@ -28,9 +38,11 @@ export default function login(){
             marginLeft: 15,
             marginRight: 15,
             borderRadius: 5,
-            justifyContent: 'center'
+            justifyContent: 'center',
+            opacity: 1
         }
-
+    
+        
         return(
             <View style={{width: '100%', flexDirection: 'row'}}>
                 {/* Exibe uma view de tamanho diferente de acordo com o numero de caracteres da mensagem */}
@@ -42,6 +54,11 @@ export default function login(){
     }
     function MensagemUsuario(props){
         let {mensagem} = props
+
+        // while(mensagem === ''){
+        //     // setInterval(()=>void)
+        //     return(0)
+        // }
 
         let corpoMensagemPequeno = {
             backgroundColor: '#6495ED',
@@ -81,123 +98,158 @@ export default function login(){
         sexo: 'm'
     }
     let mensagem = [
-        {
-            id: 0,
-            texto: 'Olá, Estamos feliz de te ver por aqui',
-            usuario: false
-        },
-        {
-            id: 1,
-            texto: 'Precisamos de sua altura para melhores resultados',
-            usuario: false
-        },
-        {
-            id: 2,
-            texto: 'Digite a altura em centimetros (Ex: 183)',
-            usuario: false
-        },
-        {
-            id: 3,
-            texto: '183 cm',
-            usuario: true
-        },
-        {
-            id: 4,
-            texto: 'Agora precisamos do seu peso ',
-            usuario: false
-        },
-        {
-            id: 5,
-            texto: 'Escreva em kg (Ex: 75.80)',
-            usuario: false
-        },
-        {
-            id: 6,
-            texto: '64.56',
-            usuario: true
-        },
-        {
-            id: 7,
-            texto: 'Quantos anos você tem?',
-            usuario: false
-        },
-        {
-            id: 8,
-            texto: '21',
-            usuario: true
-        },
-        {
-            id: 7,
-            texto: 'Qual o seu sexo? Precisamos disso para melhorar a analise',
-            usuario: false
-        },
-        {
-            id: 8,
-            texto: 'Escreva masculino ou feminino',
-            usuario: false
-        },
-        {
-            id: 9,
-            texto: 'Masculino',
-            usuario: true
-        },
-        {
-            id: 8,
-            texto: 'Ótimo, ja podemos começar',
-            usuario: false
-        },
-        {
-            id: 8,
-            texto: 'Vamos conhecer o diario...',
-            usuario: false
-        },
-        
+            {
+                id: '0',
+                message: 'Olá, Estamos feliz de te ver por aqui',
+                trigger: '1'
+            },
+            {
+                id: '1',
+                message: 'Precisamos de sua altura para melhores resultados',
+                trigger: '2'
+            },
+            {
+                id: '2',
+                message: 'Digite a altura em centimetros (Ex: 183)',
+                trigger: 'altura'
+            },
+            {
+                id: 'altura',  
+                user: true,
+                trigger: '4'
+            },
+            {
+                id: '4',
+                message: 'Agora precisamos do seu peso ',
+                trigger: '5'
+            },
+            {
+                id: '5',
+                message: 'Escreva em kg (Ex: 75.80)',
+                trigger: 'peso'
+            },
+            {
+                id: 'peso',
+                user: true,
+                trigger: '7'
+            },
+            {
+                id: '7',
+                message: 'Quantos anos você tem?',
+                trigger: 'idade'
+            },
+            {
+                id: 'idade',
+                user: true,
+                trigger: '9'
+            },
+            {
+                id: '9',
+                message: 'Qual o seu sexo? Precisamos disso para melhorar a analise',
+                trigger: 'sexo'
+            },
+            {
+                id: 'sexo',
+                options:    [
+                                { value: 'Masculino', label: 'Masculino', trigger: '12' },
+                                { value: 'Feminino', label: 'Feminino', trigger: '12' },
+                            ],
+                trigger: '11'
+            },
+            {
+                id: '12',
+                message: 'Ótimo, ja podemos começar',
+                trigger: '13'
+            },
+            {
+                id: '13',
+                texto: 'Vamos conhecer o diario...',
+                end: true
+            }   
     ]
 
-    // transformar isso em uma flat list
-    let RenderizarMensagens = mensagem.map((value, index)=>{
-        let {id, texto, usuario} = value 
+    let vetMensagens = []
+    let [mensagemRenderizada, setMensagemRenderizada] = useState([])
+
+    function enviarMensagem(){
+        let texto = mensagemInput
+        // console.log(mensagem)
+        mensagem.push([{ id: mensagem.length, texto: texto, usuario: true }])
+        setMensagemRenderizada(mensagem)
+    }
+
+    // useEffect(()=>{
+    //     mensagem.map((value, key)=>{
+    //         value.map((itens, ey)=>{
+    //             let vet = [itens]
+    //             vetMensagens.push(vet)
+    //             setTimeout(setMensagemRenderizada(vetMensagens),2000)
+                
+    //         })
+    //     })
+    //     // console.log(mensagem)
+    // })
+   
         
-        if(usuario){
-            return(
-                <MensagemUsuario mensagem={texto}/>
-            )
-        }
-        else{
-            return(
-                <MensagemApp mensagem={texto}/>
-            ) 
-        }
+    let RenderizarMensagens = mensagemRenderizada.map((value, key)=>{
         
+        return(
+            value.map((data, key)=>{
+                let {id, message, usuario} = data
+                
+                if (usuario){
+                    return <MensagemUsuario mensagem={message}/>
+                }
+                else return  <MensagemApp mensagem={message}/>
+            })
+        )
     })
+    
+
     return(
         <View style={style.container}>
-                <View style = {style.areaNotificacao}></View>
+                {/* <View style = {style.areaNotificacao}></View> */}
+                <StatusBar backgroundColor='#d0d0d0' />
                 <View style={style.header}>
                     <Text style={style.TextHeaderTitle} >DietaTec</Text>
                 </View>   
                 {/* Area dedicada as mensagens  */}
-                <View style={{height: '80%',   }}>  
-                    <ScrollView contentContainerStyle={{justifyContent: 'flex-end', flex: 1}} style={{} }>
-                        {/* <MensagemApp mensagem={'Olá, Estamos feliz de te ver por aqui'} />
-                        <MensagemApp mensagem={'Precisamos de sua altura para melhores resultados'} />
-                        <MensagemApp mensagem={'Digite a altura em centimetros (Ex: 183)'} /> */}
-                        {RenderizarMensagens}
-                    </ScrollView>
+               
+                {/* SA POHA TA CO PROBLEMA, VOU TER QUE CRIAR MEU PROPRIO CHATBOT FODASE */}
+                {/* <ChatBot steps={mensagem} /> */}
 
-                    {/* <MensagemApp mensagem={'Ex: 183'} /> */}
+
+                <View style={{flex: 1}}>  
+                    <ScrollView 
+                        // ref={ref => this.scrollView = ref}
+                        // onContentSizeChange={ (contentWidth, contentHeight)=> this.scrollView.scrollToEnd({animated: true}) }
+                        contentContainerStyle={{justifyContent: 'flex-end'}} 
+                    >
+                        
+                        {RenderizarMensagens}
+                        
+                   </ScrollView>
+                
+                   
 
                 </View>
 
-                <View style={{width: '100%',  alignItems: 'center'}}>
-
+                <View style={{width: '100%',  justifyContent: 'center', flexDirection: 'row'}}>
                     <TextInput style={style.inputText} 
+                        // ref = {'textInput'}
                         selectionColor = '#6495ED'
                         textAlign={'left'}
                         placeholder={'Digite aqui...'}  
-
+                        underlineColorAndroid = '#292929'
+                        onChangeText = { (txt)=> mensagemInput = txt }
+                        
                     />
-                    {/* <TouchableOpacity style={style.bottonStyle}><Text style={style.bottonText}>PROXIMO</Text></TouchableOpacity> */}
+                    <Icon name = 'send' color='#64a5Ef' size={20} style={style.iconeSend} 
+                    onPress={ ()=> {
+                        enviarMensagem()
+                        // this.ref.TextInput.clear()
+                    }} />
+                    
                 </View>
         </View>
     )
